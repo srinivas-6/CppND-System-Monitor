@@ -380,7 +380,7 @@ long LinuxParser::UpTime(int pid) {
 		long value = std::stol(key)/sysconf(_SC_CLK_TCK);
 
     
-		return value;
+		return (UpTime() - value);
 	}
 	return 0;
 }
