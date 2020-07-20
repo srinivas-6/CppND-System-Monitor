@@ -12,6 +12,7 @@ using std::stof;
 using std::string;
 using std::to_string;
 using std::vector;
+using std::stoi;
 
 // DONE: An example of how to read data from the filesystem
 string LinuxParser::OperatingSystem() {
@@ -269,8 +270,9 @@ string LinuxParser::Command(int pid) {
 // TODO: Read and return the memory used by a process
 // REMOVE: [[maybe_unused]] once you define the function
 string LinuxParser::Ram(int pid) {
-    string line;
-    string key, value;
+    string line; 
+    string key, value, ram;
+    int ram_value;
     std::ifstream stream(kProcDirectory + std::to_string(pid) + kStatusFilename);
     if(stream.is_open())
     {
@@ -280,16 +282,17 @@ string LinuxParser::Ram(int pid) {
         std::replace(line.begin(), line.end(),':',' ');
 
         std::istringstream linestream(line);
-        while(linestream >> key >> value)
-        {
+        linestream >> key >> value;
+        
           //cout << key << "\n";
           if(key == "VmSize")
           {
-            int value_ = stoi(value)/1024; // convert to MB
-            return std::to_string(value_);
+            ram_value = stoi(value)/1024; // convert to MB
+            ram = to_string(ram_value); // convert to string
+            return ram;
             break;
           }
-        }
+        
       }
     }
   return 0;
